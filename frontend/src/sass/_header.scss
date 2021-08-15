@@ -1,0 +1,114 @@
+@import 'colors';
+
+.header {
+    height: 100%;
+    width: 100%;
+
+    background: linear-gradient(rgba(57, 21, 0, 0.5), rgba(0, 0, 0, 0.7)),
+        url('../../img/compressed/bgheader.jpg');
+    background-size: cover;
+    background-position: center center;
+
+    &__navbar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 1rem;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__hamburguer {
+        width: 20px;
+        height: 3px;
+        background: #fff;
+        display: flex;
+        justify-content: flex-end;
+
+        transition: all 0.2s ease;
+
+        &::before {
+            content: '';
+            position: absolute;
+            width: 35px;
+            height: inherit;
+            background: #fff;
+            margin-top: -8px;
+            transition: all 0.2s ease;
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            width: 7px;
+            height: inherit;
+            background: #fff;
+            margin-top: 8px;
+            transition: all 0.2s ease;
+        }
+
+        &:hover {
+            width: 35px;
+            &::after,
+            &::before {
+                width: 35px;
+            }
+        }
+    }
+
+    &__hero {
+        position: absolute;
+        top: 30%;
+        width: 70%;
+        color: #fff;
+        padding-left: 1rem;
+
+        &__subtitle {
+            opacity: 0;
+            font-style: italic;
+            font-family: PopThin;
+        }
+
+        &__title {
+            position: relative;
+            left: -100%;
+            font-size: 3rem;
+            line-height: 1;
+            font-family: PopBold;
+        }
+    }
+
+    &__social {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+
+        a {
+            transform: scale(0);
+            margin-bottom: 2rem;
+            margin-right: 1rem;
+            img {
+                width: 1.5rem;
+            }
+        }
+    }
+
+    &__nextSection {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 0;
+        svg {
+            vertical-align: top;
+            path:nth-child(3) {
+                fill: $mainColor;
+                transform-origin: 66% 65%;
+            }
+        }
+    }
+}
