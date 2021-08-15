@@ -23,17 +23,17 @@ function anim() {
     const step = document.querySelector('#step');
 
     headerTitle.animate([{ left: '0%' }], {
-        duration: 300,
-        fill: 'forwards',
-    });
-
-    headerSubtitle.animate([{ opacity: '1' }], {
         duration: 500,
         fill: 'forwards',
     });
 
-    step.animate([{ transform: 'rotate(720deg)' }], {
-        duration: 700,
+    headerSubtitle.animate([{ opacity: '1' }], {
+        duration: 1000,
+        fill: 'forwards',
+    });
+
+    step.animate([{ transform: 'rotate(380deg)' }], {
+        duration: 500,
         fill: 'forwards',
     });
 
