@@ -27,14 +27,13 @@
 html,
 body {
   width: 100%;
-  height: 100vh;
+  overflow: hidden;
   height: 100vh;
   /* Fallback for browsers that do not support Custom Properties */
-  height: calc(var(--vh, 1vh) * 100);
 }
 
 body {
-  background: #5e2200;
+  background: #2e1100;
   font-family: 'PopReg';
   font-size: 16px;
 }
@@ -49,10 +48,14 @@ a {
 
 .container {
   height: 100%;
+  transform: translate(0%);
+  transition: transform 0.3s ease-out;
+  cursor: grab;
 }
 
 .header {
-  height: 100%;
+  height: 100vh;
+  /* Fallback for browsers that do not support Custom Properties */
   width: 100%;
   background: linear-gradient(rgba(57, 21, 0, 0.5), rgba(0, 0, 0, 0.7)), url("../../img/compressed/bgheader.jpg");
   background-size: cover;
@@ -60,7 +63,7 @@ a {
 }
 
 .header__navbar {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -72,39 +75,52 @@ a {
 }
 
 .header__hamburguer {
-  width: 20px;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 0.5rem;
+  align-items: flex-start;
+  height: 40px;
+  width: 60px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.header__hamburguer__btn {
+  width: 35px;
   height: 3px;
   background: #fff;
   display: flex;
   justify-content: flex-end;
+  margin-top: 8px;
   transition: all 0.2s ease;
 }
 
-.header__hamburguer::before {
+.header__hamburguer__btn::before {
   content: '';
   position: absolute;
-  width: 35px;
-  height: inherit;
-  background: #fff;
-  margin-top: -8px;
-  transition: all 0.2s ease;
-}
-
-.header__hamburguer::after {
-  content: '';
-  position: absolute;
-  width: 7px;
+  width: 20px;
   height: inherit;
   background: #fff;
   margin-top: 8px;
   transition: all 0.2s ease;
 }
 
-.header__hamburguer:hover {
+.header__hamburguer__btn::after {
+  content: '';
+  position: absolute;
+  width: 7px;
+  height: inherit;
+  background: #fff;
+  margin-top: 16px;
+  transition: all 0.2s ease;
+}
+
+.header__hamburguer:hover .header__hamburguer__btn {
   width: 35px;
 }
 
-.header__hamburguer:hover::after, .header__hamburguer:hover::before {
+.header__hamburguer:hover .header__hamburguer__btn::after, .header__hamburguer:hover .header__hamburguer__btn::before {
   width: 35px;
 }
 
@@ -124,7 +140,7 @@ a {
 
 .header__hero__title {
   position: relative;
-  left: -100%;
+  opacity: 0;
   font-size: 3rem;
   line-height: 1;
   font-family: PopBold;
@@ -160,7 +176,24 @@ a {
 }
 
 .header__nextSection svg path:nth-child(3) {
-  fill: #5e2200;
+  fill: #2e1100;
   transform-origin: 66% 65%;
+}
+
+.recommended {
+  width: 100%;
+  height: 100vh;
+  /* Fallback for browsers that do not support Custom Properties */
+  background: linear-gradient(rgba(57, 21, 0, 0.5), rgba(0, 0, 0, 0.7)), url("../../img/bg5Books.jpg");
+  background-size: cover;
+  background-position: center center;
+}
+
+.postsOverview {
+  width: 100%;
+  height: 100vh;
+  /* Fallback for browsers that do not support Custom Properties */
+  padding: 1rem;
+  overflow: scroll;
 }
 /*# sourceMappingURL=main.css.map */

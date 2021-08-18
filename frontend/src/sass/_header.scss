@@ -1,7 +1,10 @@
 @import 'colors';
+@import 'mixin';
 
 .header {
-    height: 100%;
+    height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+    // // height: calc(var(--vh, 1vh) * 100);
+    // height: var(--vh);
     width: 100%;
 
     background: linear-gradient(rgba(57, 21, 0, 0.5), rgba(0, 0, 0, 0.7)),
@@ -10,7 +13,7 @@
     background-position: center center;
 
     &__navbar {
-        position: absolute;
+        position: fixed;
         top: 0;
         left: 0;
         width: 100%;
@@ -22,35 +25,49 @@
     }
 
     &__hamburguer {
-        width: 20px;
-        height: 3px;
-        background: #fff;
+        @include noHighlight;
+
         display: flex;
         justify-content: flex-end;
+        padding-right: 0.5rem;
+        align-items: flex-start;
+        height: 40px;
+        width: 60px;
+        cursor: pointer;
+        user-select: none;
 
-        transition: all 0.2s ease;
-
-        &::before {
-            content: '';
-            position: absolute;
+        &__btn {
             width: 35px;
-            height: inherit;
+            height: 3px;
             background: #fff;
-            margin-top: -8px;
-            transition: all 0.2s ease;
-        }
-
-        &::after {
-            content: '';
-            position: absolute;
-            width: 7px;
-            height: inherit;
-            background: #fff;
+            display: flex;
+            justify-content: flex-end;
             margin-top: 8px;
+
             transition: all 0.2s ease;
+
+            &::before {
+                content: '';
+                position: absolute;
+                width: 20px;
+                height: inherit;
+                background: #fff;
+                margin-top: 8px;
+                transition: all 0.2s ease;
+            }
+
+            &::after {
+                content: '';
+                position: absolute;
+                width: 7px;
+                height: inherit;
+                background: #fff;
+                margin-top: 16px;
+                transition: all 0.2s ease;
+            }
         }
 
-        &:hover {
+        &:hover &__btn {
             width: 35px;
             &::after,
             &::before {
@@ -74,7 +91,7 @@
 
         &__title {
             position: relative;
-            left: -100%;
+            opacity: 0;
             font-size: 3rem;
             line-height: 1;
             font-family: PopBold;
