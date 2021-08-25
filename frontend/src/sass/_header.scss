@@ -2,9 +2,7 @@
 @import 'mixin';
 
 .header {
-    height: 100vh; /* Fallback for browsers that do not support Custom Properties */
-    // // height: calc(var(--vh, 1vh) * 100);
-    // height: var(--vh);
+    height: 100vh;
     width: 100%;
 
     background: linear-gradient(rgba(57, 21, 0, 0.5), rgba(0, 0, 0, 0.7)),
@@ -125,6 +123,21 @@
             path:nth-child(3) {
                 fill: $mainColor;
                 transform-origin: 66% 65%;
+            }
+        }
+        svg > * {
+            transition: all 0.5s ease;
+        }
+
+        &:hover {
+            svg {
+                circle {
+                    fill: $mainColor;
+                }
+                path:nth-child(2),
+                path:nth-child(3) {
+                    fill: white;
+                }
             }
         }
     }

@@ -1,18 +1,18 @@
 window.addEventListener('DOMContentLoaded', () => {
-    const sections = Array.from(document.getElementsByClassName('section')); // All the sections of the website
+    const sections = Array.from(document.getElementsByClassName('section')); // All the sections of the homepage's slider
     const container = document.getElementById('container'); // The sections' container
 
-    // Object with properties related to touch controller
+    // Object with properties related to the fullscreen touch slider controler.
     const touchParams = {
-        sections: sections, // Sections of the website
-        isDragging: false, // It'll be true while dragging the screen with the touch control
-        startPosition: 0, // Vertical position of the point where the dragging of the screen began
-        previousPosition: 0, // Previous scroll position
-        currentPosition: 0, // The current position of the container
-        relativeToStart: 0, // Difference in position from where it started to drag
-        index: 0, // The current section
-        canSlideUp: true,
-        canSlideDown: true,
+        sections: sections, // Sections of the fullscreen touch slider.
+        isDragging: false, // It'll be true while dragging the slider.
+        startPosition: 0, // Y-Axis position where the dragging began.
+        previousPosition: 0, // Y-Axis position prior to the start of dragging.
+        currentPosition: 0, // Current Y-Axis position, updated while dragging.
+        relativeToStart: 0, // Difference in position from where dragging started.
+        index: 0, // The current section showed on the viewport.
+        canSlideUp: true, // True if I can slide into a next section.
+        canSlideDown: true, // True if I can slide into a previous section.
     };
 
     adjustHeight(sections);
@@ -24,12 +24,20 @@ window.addEventListener('DOMContentLoaded', () => {
         adjustByIndex(container, touchParams);
     });
 
+    // Handle scrolleable sections
     const scrolleables = container.querySelectorAll('[scrolleable]');
 
     scrolleables.forEach((scrolleable) => {
         scrolleable.addEventListener('scroll', function () {
             handleScrolleableSection(this, container, touchParams);
         });
+    });
+
+    const nextSectionBtn = document.querySelector('#nextSectionBtn');
+    nextSectionBtn.addEventListener('click', () => {
+        touchParams.index = 1;
+        adjustByIndex(container, touchParams);
+        touchParams.index = 1;
     });
 });
 
@@ -87,8 +95,9 @@ function anim() {
             { transform: 'rotate(380deg)' },
         ],
         {
-            duration: 500,
-            fill: 'forwards',
+            duration: 1000,
+            fill: 'none',
+            iterations: Infinity,
         }
     );
 
@@ -130,8 +139,6 @@ function touchStartHanlder(container, touchParams) {
 
 function touchMoveHandler(container, touchParams) {
     return (e) => {
-        // if (!touchParams.canSlide && touchParams.index === 2) return;
-
         touchParams.relativeToStart =
             e.touches[0].clientY - touchParams.startPosition;
 
@@ -140,11 +147,11 @@ function touchMoveHandler(container, touchParams) {
                 touchParams.relativeToStart + touchParams.previousPosition;
         }
 
-        if (touchParams.canSlideUp && touchParams.relativeToStart > 0) {
+        if (touchParams.canSlideUp && touchParams.relativeToStart > 10) {
             container.style.transform = `translateY(${touchParams.currentPosition}px)`;
         } else if (
             touchParams.canSlideDown &&
-            touchParams.relativeToStart < 0
+            touchParams.relativeToStart < -10
         ) {
             container.style.transform = `translateY(${touchParams.currentPosition}px)`;
         }
@@ -153,8 +160,6 @@ function touchMoveHandler(container, touchParams) {
 
 function touchEndHanlder(container, touchParams) {
     return (e) => {
-        touchParams.previousPosition = touchParams.currentPosition;
-
         if (
             touchParams.relativeToStart > 100 &&
             touchParams.index > 0 &&
@@ -172,7 +177,6 @@ function touchEndHanlder(container, touchParams) {
             touchParams.canSlideDown = true;
             touchParams.canSlideUp = true;
         }
-
         adjustByIndex(container, touchParams);
     };
 }
@@ -186,5 +190,6 @@ function adjustByIndex(container, touchParams) {
     container.style.transform = `translateY(${
         window.innerHeight * -touchParams.index
     }px)`;
+    touchParams.relativeToStart = 0;
     touchParams.previousPosition = -touchParams.index * window.innerHeight;
 }

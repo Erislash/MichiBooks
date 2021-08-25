@@ -55,7 +55,6 @@ a {
 
 .header {
   height: 100vh;
-  /* Fallback for browsers that do not support Custom Properties */
   width: 100%;
   background: linear-gradient(rgba(57, 21, 0, 0.5), rgba(0, 0, 0, 0.7)), url("../../img/compressed/bgheader.jpg");
   background-size: cover;
@@ -178,6 +177,19 @@ a {
 .header__nextSection svg path:nth-child(3) {
   fill: #2e1100;
   transform-origin: 66% 65%;
+}
+
+.header__nextSection svg > * {
+  transition: all 0.5s ease;
+}
+
+.header__nextSection:hover svg circle {
+  fill: #2e1100;
+}
+
+.header__nextSection:hover svg path:nth-child(2),
+.header__nextSection:hover svg path:nth-child(3) {
+  fill: white;
 }
 
 .recommended {
