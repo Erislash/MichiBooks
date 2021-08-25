@@ -1,46 +1,55 @@
 window.addEventListener('DOMContentLoaded', () => {
-    const sections = Array.from(document.getElementsByClassName('section'));
-    const container = document.getElementById('container');
+    const sections = Array.from(document.getElementsByClassName('section')); // All the sections of the website
+    const container = document.getElementById('container'); // The sections' container
+
+    // Object with properties related to touch controller
     const touchParams = {
-        sections: sections,
-        isDragging: false,
-        startPosition: 0,
-        previousPosition: 0,
-        currentPosition: 0,
-        relativeToStart: 0,
-        index: 0,
-        endPosition: 0,
-        canSlide: true,
+        sections: sections, // Sections of the website
+        isDragging: false, // It'll be true while dragging the screen with the touch control
+        startPosition: 0, // Vertical position of the point where the dragging of the screen began
+        previousPosition: 0, // Previous scroll position
+        currentPosition: 0, // The current position of the container
+        relativeToStart: 0, // Difference in position from where it started to drag
+        index: 0, // The current section
+        canSlideUp: true,
+        canSlideDown: true,
     };
 
     adjustHeight(sections);
     anim();
     touchEvents(container, touchParams);
 
-    const postsOverview = container.querySelector('[scrolleable]');
-    postsOverview.addEventListener('scroll', () => {
-        if (touchParams.index !== 2) {
-            touchParams.canSlide = false;
-            return;
-        }
-        touchParams.canSlide = false;
-        if (
-            postsOverview.scrollTop +
-                postsOverview.getBoundingClientRect().bottom >=
-                postsOverview.scrollHeight - 10 ||
-            postsOverview.scrollTop <= 10
-        ) {
-            touchParams.canSlide = true;
-        }
-        console.log(
-            postsOverview.scrollTop,
-            'awdad',
-            postsOverview.scrollHeight,
-            'adwa',
-            postsOverview.getBoundingClientRect()
-        );
+    window.addEventListener('resize', () => {
+        adjustHeight(sections);
+        adjustByIndex(container, touchParams);
+    });
+
+    const scrolleables = container.querySelectorAll('[scrolleable]');
+
+    scrolleables.forEach((scrolleable) => {
+        scrolleable.addEventListener('scroll', function () {
+            handleScrolleableSection(this, container, touchParams);
+        });
     });
 });
+
+function handleScrolleableSection(scrolleable, container, touchParams) {
+    touchParams.canSlideUp = false;
+    touchParams.canSlideDown = false;
+
+    if (
+        scrolleable.scrollTop + scrolleable.getBoundingClientRect().bottom >=
+        scrolleable.scrollHeight - 10
+    ) {
+        console.log('Down');
+        touchParams.canSlideDown = true;
+    }
+    if (scrolleable.scrollTop <= 10) {
+        console.log('TOP');
+
+        touchParams.canSlideUp = true;
+    }
+}
 
 function adjustHeight(sections) {
     let vh = window.innerHeight;
@@ -116,13 +125,12 @@ function touchStartHanlder(container, touchParams) {
     return (e) => {
         touchParams.isDragging = true;
         touchParams.startPosition = e.touches[0].clientY;
-        // console.log('Start:', touchParams.startPosition);
     };
 }
 
 function touchMoveHandler(container, touchParams) {
     return (e) => {
-        if (!touchParams.canSlide && touchParams.index === 2) return;
+        // if (!touchParams.canSlide && touchParams.index === 2) return;
 
         touchParams.relativeToStart =
             e.touches[0].clientY - touchParams.startPosition;
@@ -131,7 +139,15 @@ function touchMoveHandler(container, touchParams) {
             touchParams.currentPosition =
                 touchParams.relativeToStart + touchParams.previousPosition;
         }
-        container.style.transform = `translateY(${touchParams.currentPosition}px)`;
+
+        if (touchParams.canSlideUp && touchParams.relativeToStart > 0) {
+            container.style.transform = `translateY(${touchParams.currentPosition}px)`;
+        } else if (
+            touchParams.canSlideDown &&
+            touchParams.relativeToStart < 0
+        ) {
+            container.style.transform = `translateY(${touchParams.currentPosition}px)`;
+        }
     };
 }
 
@@ -139,27 +155,36 @@ function touchEndHanlder(container, touchParams) {
     return (e) => {
         touchParams.previousPosition = touchParams.currentPosition;
 
-        // if (touchParams.index === 2) {
-        //     return;
-        // }
-
-        if (touchParams.relativeToStart > 100 && touchParams.index > 0) {
+        if (
+            touchParams.relativeToStart > 100 &&
+            touchParams.index > 0 &&
+            touchParams.canSlideUp
+        ) {
             touchParams.index--;
+            touchParams.canSlideDown = true;
+            touchParams.canSlideUp = true;
         } else if (
             touchParams.relativeToStart < -100 &&
-            touchParams.index < touchParams.sections.length - 1
+            touchParams.index < touchParams.sections.length - 1 &&
+            touchParams.canSlideDown
         ) {
             touchParams.index++;
+            touchParams.canSlideDown = true;
+            touchParams.canSlideUp = true;
         }
-        // console.log(touchParams.index);
+
         adjustByIndex(container, touchParams);
     };
 }
 
+/**
+ * Adjusts the position of the container depending on the index of the current section.
+ * @param {*} container The section's container
+ * @param {*} touchParams An object whose properties are variables related to the touch handler
+ */
 function adjustByIndex(container, touchParams) {
     container.style.transform = `translateY(${
         window.innerHeight * -touchParams.index
     }px)`;
     touchParams.previousPosition = -touchParams.index * window.innerHeight;
-    console.log(touchParams.index);
 }
