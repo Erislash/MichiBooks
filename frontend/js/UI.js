@@ -5,7 +5,6 @@ window.addEventListener('DOMContentLoaded', () => {
     // Object with properties related to the fullscreen touch slider controler.
     const touchParams = {
         sections: sections, // Sections of the fullscreen touch slider.
-        isDragging: false, // It'll be true while dragging the slider.
         startPosition: 0, // Y-Axis position where the dragging began.
         previousPosition: 0, // Y-Axis position prior to the start of dragging.
         currentPosition: 0, // Current Y-Axis position, updated while dragging.
@@ -24,15 +23,16 @@ window.addEventListener('DOMContentLoaded', () => {
         adjustByIndex(container, touchParams);
     });
 
-    // Handle scrolleable sections
+    // Handle scrolleable sections --------------------------------------
     const scrolleables = container.querySelectorAll('[scrolleable]');
 
     scrolleables.forEach((scrolleable) => {
         scrolleable.addEventListener('scroll', function () {
-            handleScrolleableSection(this, container, touchParams);
+            checkScrollInScrolleable(this, container, touchParams);
         });
     });
 
+    // Go to second section with the button
     const nextSectionBtn = document.querySelector('#nextSectionBtn');
     nextSectionBtn.addEventListener('click', () => {
         touchParams.index = 1;
@@ -41,7 +41,13 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-function handleScrolleableSection(scrolleable, container, touchParams) {
+/**
+ * This function makes sure that the scroll of a scrolleable section is at some bound to be able to slide to other section.
+ * @param {*} scrolleable the scrolleable section DOM element.
+ * @param {*} container the sectoins' container.
+ * @param {*} touchParams the Oject with properties related to the fullscreen touch slider controler.
+ */
+function checkScrollInScrolleable(scrolleable, container, touchParams) {
     touchParams.canSlideUp = false;
     touchParams.canSlideDown = false;
 
@@ -49,16 +55,17 @@ function handleScrolleableSection(scrolleable, container, touchParams) {
         scrolleable.scrollTop + scrolleable.getBoundingClientRect().bottom >=
         scrolleable.scrollHeight - 10
     ) {
-        console.log('Down');
         touchParams.canSlideDown = true;
     }
     if (scrolleable.scrollTop <= 10) {
-        console.log('TOP');
-
         touchParams.canSlideUp = true;
     }
 }
 
+/**
+ * Adjusts the height of the sections, html and body DOM elements to fill the full viewport
+ * @param {*} sections
+ */
 function adjustHeight(sections) {
     let vh = window.innerHeight;
     document.querySelector('html').style.height = `${vh}px`;
@@ -69,25 +76,31 @@ function adjustHeight(sections) {
     });
 }
 
+/**
+ * Make the header's animation when the page has been loaded
+ */
 function anim() {
     const headerTitle = document.getElementById('headerTitle');
     const headerSubtitle = document.getElementById('headerSubtitle');
     const socialIcons = document.querySelectorAll('.socialIcon');
-    const step = document.querySelector('#step');
+    const footprint = document.querySelector('#footprint');
 
+    // Title fade in
     headerTitle.animate([{ opacity: '1' }], {
         easing: 'ease',
         duration: 2000,
         fill: 'forwards',
     });
 
+    // Subtitle fade in
     headerSubtitle.animate([{ opacity: '1' }], {
         delay: 1500,
         duration: 2000,
         fill: 'forwards',
     });
 
-    step.animate(
+    // Footprint loop rotation
+    footprint.animate(
         [
             { transform: 'rotate(380deg)' },
             { transform: 'rotate(300deg)' },
@@ -101,6 +114,7 @@ function anim() {
         }
     );
 
+    // Social media icons fade in
     for (let i = 0; i < socialIcons.length; ++i) {
         socialIcons[i].animate([{ transform: 'scale(1)' }], {
             easing: 'ease',
@@ -111,6 +125,9 @@ function anim() {
     }
 }
 
+/**
+ * Adds event handlers to all touch events
+ */
 function touchEvents(container, touchParams) {
     container.addEventListener(
         'touchstart',
@@ -132,7 +149,6 @@ function touchEvents(container, touchParams) {
 
 function touchStartHanlder(container, touchParams) {
     return (e) => {
-        touchParams.isDragging = true;
         touchParams.startPosition = e.touches[0].clientY;
     };
 }
