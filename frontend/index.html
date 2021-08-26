@@ -11,16 +11,16 @@
 </head>
 
 <body>
+    <nav class="navbar">
+        <a href="#" class="header__logo">
+            <img src="img/Logo.svg" alt="MichiBooks logo">
+        </a href="#">
+        <div class="header__hamburguer">
+            <div class="header__hamburguer__btn"></div>
+        </div>
+    </nav>
     <div class="container" id="container">
         <header class="header section">
-            <nav class="header__navbar">
-                <a href="#" class="header__logo">
-                    <img src="img/Logo.svg" alt="MichiBooks logo">
-                </a href="#">
-                <div class="header__hamburguer">
-                    <div class="header__hamburguer__btn"></div>
-                </div>
-            </nav>
 
             <div class="header__hero">
                 <h4 class="header__hero__subtitle" id="headerSubtitle">New Post Everyday!</h4>
@@ -57,12 +57,32 @@
 
         <section class="recommended section">
             <div class="highlightedPosts">
-                <div class="highlightedPost">
-                    <!-- <img src="./img/bg3Books.jpg" alt="Highlighted Post Thumbnail"> -->
-                    <h2>A Recommended Post</h2>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Provident pariatur ipsam et assumenda
-                        corporis quibusdam, expedita quas reiciendis sint doloremque vero libero nobis necessitatibus
-                        totam facere quod. Sequi, quam ipsa.</p>
+                <div class="highlightedPosts__highlightedPost">
+                    <div class="highlightedPosts__imgContainer">
+                        <div class="overlay"></div>
+                        <img src="./img/bg3Books.jpg" alt="Highlighted Post Thumbnail">
+                    </div>
+                    <h2 class="highlightedPosts__postTitle">A Recommended Post</h2>
+                    <p class="highlightedPosts__postDesc">Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                        Provident pariatur ipsam et assumenda</p>
+                </div>
+            </div>
+
+            <div class="mostBookmarkedPosts">
+                <div class="mostBookmarkedPosts__post">
+                    <div class="mostBookmarkedPosts__title">Title</div>
+                    <div class="mostBookmarkedPosts__marked">1900</div>
+                    <div class="mostBookmarkedPosts__description">Lorem ipsum dolor sit amet, consectetur adipisicing
+                        elit. Voluptate eveniet
+                        harum architecto, magni exercitationem sed ad illo dolore blanditiis nisi.</div>
+                </div>
+
+                <div class="mostBookmarkedPosts__post">
+                    <div class="mostBookmarkedPosts__title">Title</div>
+                    <div class="mostBookmarkedPosts__marked">1900</div>
+                    <div class="mostBookmarkedPosts__description">Lorem ipsum dolor sit amet, consectetur adipisicing
+                        elit. Voluptate eveniet
+                        harum architecto, magni exercitationem sed ad illo dolore blanditiis nisi.</div>
                 </div>
             </div>
         </section>
